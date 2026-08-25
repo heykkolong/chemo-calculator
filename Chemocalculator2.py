@@ -5,7 +5,7 @@ import math
 st.set_page_config(page_title="항암제 용량 계산기", layout="centered")
 
 st.title("💊 Chemotherapy Dose Calculator")
-st.caption("XELOX 및 mFOLFOX6 (Autofuser) 처방 용량 자동 계산기")
+st.caption("대장암 항암 레지멘(FOLFOX, FOLFIRI, mFOLFOX6, XELOX, Autofuser) 용량 자동 계산기")
 
 # 1. 신체 계측 정보 입력
 st.subheader("1. 신체 정보 입력")
@@ -22,37 +22,117 @@ st.success(f"**계산된 체표면적 (BSA): {bsa} m²**")
 
 st.markdown("---")
 
-# 2. 항암 레지멘 선택 (탭 방식)
+# 2. 항암 레지멘 선택 (요청하신 순서대로 탭 배치)
 st.subheader("2. 항암 레지멘 선택")
-tab1, tab2 = st.tabs(["XELOX 레지멘", "mFOLFOX6 (Autofuser) 레지멘"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs([
+    "FOLFOX", 
+    "FOLFIRI", 
+    "mFOLFOX6", 
+    "XELOX", 
+    "mFOLFOX6 (Autofuser)"
+])
 
 # ==========================================
-# TAB 1: XELOX
+# TAB 1: FOLFOX
 # ==========================================
 with tab1:
+    st.markdown("### 🔹 표준 FOLFOX Regimen")
+    oxali_folfox = round(bsa * 85, 1)          # Oxaliplatin 85 mg/m²
+    leucovorin_folfox = round(bsa * 200, 1)    # Leucovorin 200 mg/m²
+    fu_bolus_folfox = round(bsa * 400, 1)      # 5-FU Bolus 400 mg/m²
+    fu_ci_folfox = round(bsa * 600, 1)          # 5-FU CI 600 mg/m² (22시간/일, 2일간 총 1200mg/m²)
+    
+    st.info(f"""
+    **[표준 FOLFOX 처방 가이드]**
+    * **Oxaliplatin (85 mg/m²)**: **{oxali_folfox} mg**
+    * **Leucovorin (200 mg/m²)**: **{leucovorin_folfox} mg**
+    * **5-FU Bolus (400 mg/m²)**: **{fu_bolus_folfox} mg**
+    * **5-FU Continuous Infusion (600 mg/m²/day, 2days)**: **{fu_ci_folfox} mg / day**
+    """)
+
+# ==========================================
+# TAB 2: FOLFIRI
+# ==========================================
+with tab2:
+    st.markdown("### 🔹 FOLFIRI Regimen")
+    
+    iri_dose = round(bsa * 180, 1)             # Irinotecan 180 mg/m²
+    leucovorin_folfiri = round(bsa * 400, 1)   # Leucovorin 400 mg/m²
+    fu_bolus_folfiri = round(bsa * 400, 1)     # 5-FU Bolus 400 mg/m²
+    fu_ci_folfiri = round(bsa * 2400, 1)       # 5-FU CI 2400 mg/m²
+    
+    st.info(f"""
+    **[FOLFIRI 처방 가이드]**
+    * **Irinotecan (180 mg/m²)**: **{iri_dose} mg**
+    * **Leucovorin (400 mg/m²)**: **{leucovorin_folfiri} mg**
+    * **5-FU Bolus (400 mg/m²)**: **{fu_bolus_folfiri} mg**
+    * **5-FU Continuous Infusion (2400 mg/m², 46h)**: **{fu_ci_folfiri} mg**
+    """)
+
+# ==========================================
+# TAB 3: mFOLFOX6
+# ==========================================
+with tab3:
+    st.markdown("### 🔹 mFOLFOX6 Regimen")
+    oxali_mfolfox = round(bsa * 85, 1)         # Oxaliplatin 85 mg/m²
+    leucovorin_mfolfox = round(bsa * 400, 1)   # Leucovorin 400 mg/m²
+    fu_bolus_mfolfox = round(bsa * 400, 1)     # 5-FU Bolus 400 mg/m²
+    fu_ci_mfolfox = round(bsa * 2400, 1)       # 5-FU CI 2400 mg/m² (46시간 지속주입)
+    
+    st.info(f"""
+    **[mFOLFOX6 처방 가이드]**
+    * **Oxaliplatin (85 mg/m²)**: **{oxali_mfolfox} mg**
+    * **Leucovorin (400 mg/m²)**: **{leucovorin_mfolfox} mg**
+    * **5-FU Bolus (400 mg/m²)**: **{fu_bolus_mfolfox} mg**
+    * **5-FU Continuous Infusion (2400 mg/m², 46h)**: **{fu_ci_mfolfox} mg**
+    """)
+
+# ==========================================
+# TAB 4: XELOX (젤로다 상세 복용법 적용)
+# ==========================================
+with tab4:
     st.markdown("### 🔹 XELOX Regimen")
     oxali_dose = round(bsa * 130, 1)
-    cape_dose = round(bsa * 1000, 1)
     
-    # Capecitabine 알약 조제 로직 (500mg, 150mg)
-    # 아침/저녁 분복 기준 예시 계산
-    pills_500 = int(cape_dose // 500)
-    rem_dose = cape_dose % 500
-    pills_150 = round(rem_dose / 150)
+    # Capecitabine(젤로다) 계산: 1000 mg/m² b.i.d. (하루 2회 복용)
+    cape_single_dose = round(bsa * 1000, 1)    # 1회 용량
+    cape_daily_dose = cape_single_dose * 2      # 총 일일 용량
+    
+    # 1회 복용 알약 수 (500mg, 150mg 조합)
+    pills_500_single = int(cape_single_dose // 500)
+    rem_dose = cape_single_dose % 500
+    pills_150_single = round(rem_dose / 150)
+    
+    # 하루 총 복용 알약 수 (아침/저녁 2회 복용 기준)
+    pills_500_daily = pills_500_single * 2
+    pills_150_daily = pills_150_single * 2
     
     st.info(f"""
     **[XELOX 처방 가이드]**
     * **Oxaliplatin (130 mg/m²)**: **{oxali_dose} mg**
-    * **Capecitabine (1000 mg/m² b.i.d)**: **{cape_dose} mg** (1회 용량)
-      - 500mg 정제: **{pills_500} 알**
-      - 150mg 정제: **{pills_150} 알**
+    
+    ---
+    **[Capecitabine (젤로다) 용법 용량]**
+    * **하루 총 용량 (b.i.d.)**: **{cape_daily_dose} mg**
+    * **하루 총 복용 알약 수**: 
+      - 500mg 정제: **총 {pills_500_daily} 알** (아침 {pills_500_single}알 / 저녁 {pills_500_single}알)
+      - 150mg 정제: **총 {pills_150_daily} 알** (아침 {pills_150_single}알 / 저녁 {pills_150_single}알)
+    * **1회 용량 (1000 mg/m²)**: **{cape_single_dose} mg**
+    * **1회 복용량 (아침 또는 저녁)**: 
+      - 500mg 정제: **{pills_500_single} 알**
+      - 150mg 정제: **{pills_150_single} 알**
+
     """)
 
 # ==========================================
-# TAB 2: mFOLFOX6 (Autofuser)
+# TAB 5: mFOLFOX6 (Autofuser)
 # ==========================================
-with tab2:
-    st.markdown("### 🔹 mFOLFOX6 (Autofuser) Regimen")
+with tab5:
+    st.markdown("### 🔹 mFOLFOX6 (Autofuser 230 mL) Regimen")
+    
+    oxali_folfox_auto = round(bsa * 85, 1)
+    leucovorin_folfox_auto = round(bsa * 400, 1)
+    fu_bolus_folfox_auto = round(bsa * 400, 1)
     
     # 5-FU 2400 mg/m² (46시간 지속주입), 농도 50 mg/mL, Autofuser 230 mL 기준
     fu_total_mg = bsa * 2400
@@ -62,7 +142,13 @@ with tab2:
     ns_diluent_ml = round(autofuser_capacity - fu_volume_ml, 2)
     
     st.info(f"""
-    **[mFOLFOX6 5-FU Continuous Infusion]**
+    **[mFOLFOX6 기본 처방]**
+    * **Oxaliplatin (85 mg/m²)**: **{oxali_folfox_auto} mg**
+    * **Leucovorin (400 mg/m²)**: **{leucovorin_folfox_auto} mg**
+    * **5-FU Bolus (400 mg/m²)**: **{fu_bolus_folfox_auto} mg**
+    
+    ---
+    **[5-FU Continuous Infusion (Autofuser 230 mL 계산)]**
     * **5-FU 총 처방량 (2400 mg/m²)**: **{fu_total_mg:.1f} mg**
     * **5-FU 약물 부피 (50 mg/mL)**: **{fu_volume_ml} mL**
     * **Autofuser 용량**: **{autofuser_capacity} mL**
