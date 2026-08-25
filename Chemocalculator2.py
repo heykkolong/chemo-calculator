@@ -57,14 +57,14 @@ with tab2:
     st.markdown("### 🔹 FOLFIRI Regimen")
     
     iri_dose = round(bsa * 180, 1)             # Irinotecan 180 mg/m²
-    leucovorin_folfiri = round(bsa * 400, 1)   # Leucovorin 400 mg/m²
+    leucovorin_folfiri = round(bsa * 200, 1)   # Leucovorin 200 mg/m²
     fu_bolus_folfiri = round(bsa * 400, 1)     # 5-FU Bolus 400 mg/m²
     fu_ci_folfiri = round(bsa * 2400, 1)       # 5-FU CI 2400 mg/m²
     
     st.info(f"""
     **[FOLFIRI 처방 가이드]**
     * **Irinotecan (180 mg/m²)**: **{iri_dose} mg**
-    * **Leucovorin (400 mg/m²)**: **{leucovorin_folfiri} mg**
+    * **Leucovorin (200 mg/m²)**: **{leucovorin_folfiri} mg**
     * **5-FU Bolus (400 mg/m²)**: **{fu_bolus_folfiri} mg**
     * **5-FU Continuous Infusion (2400 mg/m², 46h)**: **{fu_ci_folfiri} mg**
     """)
