@@ -8,7 +8,7 @@ st.title("💊 Chemotherapy Dose Calculator")
 st.caption("대장암 항암 레지멘(FOLFOX, FOLFIRI, mFOLFOX6, XELOX, Autofuser) 용량 및 감량 계산기")
 
 # 1. 신체 계측 정보 및 용량 조절 비율 입력
-st.subheader("1. 신체 정보 및 용량 조절 선택")
+st.subheader("1. 신체 정보 입력")
 col1, col2, col3 = st.columns(3)
 
 with col1:
