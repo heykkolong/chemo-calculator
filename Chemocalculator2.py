@@ -19,7 +19,7 @@ with col3:
     # 용량 조절 옵션 선택 (기본값 100%)
     dose_scale_percent = st.selectbox(
         "투여 용량 비율 (%)",
-        options=[100, 95, 90, 85, 80, 75, 70, 50],
+        options=[100, 95, 90, 85, 80, 75, 70, 65, 60],
         index=0
     )
 
