@@ -5,24 +5,42 @@ import math
 st.set_page_config(page_title="항암제 용량 계산기", layout="centered")
 
 st.title("💊 Chemotherapy Dose Calculator")
-st.caption("대장암 항암 레지멘(FOLFOX, FOLFIRI, mFOLFOX6, XELOX, Autofuser) 용량 자동 계산기")
+st.caption("대장암 항암 레지멘(FOLFOX, FOLFIRI, mFOLFOX6, XELOX, Autofuser) 용량 및 감량 계산기")
 
-# 1. 신체 계측 정보 입력
-st.subheader("1. 신체 정보 입력")
-col1, col2 = st.columns(2)
+# 1. 신체 계측 정보 및 용량 조절 비율 입력
+st.subheader("1. 신체 정보 및 용량 조절 선택")
+col1, col2, col3 = st.columns(3)
 
 with col1:
     height = st.number_input("키 (cm)", min_value=100.0, max_value=220.0, value=165.0, step=0.1)
 with col2:
     weight = st.number_input("체중 (kg)", min_value=30.0, max_value=150.0, value=60.0, step=0.1)
+with col3:
+    # 용량 조절 옵션 선택 (기본값 100%)
+    dose_scale_percent = st.selectbox(
+        "투여 용량 비율 (%)",
+        options=[100, 90, 85, 80, 75, 70, 50],
+        index=0
+    )
+
+# 용량 비율 계수 (예: 80% -> 0.8)
+scale = dose_scale_percent / 100.0
 
 # Mosteller 공식 BSA 계산 (소수점 둘째자리 반올림)
 bsa = round(math.sqrt((height * weight) / 3600), 2)
-st.success(f"**계산된 체표면적 (BSA): {bsa} m²**")
+
+col_res1, col_res2 = st.columns(2)
+with col_res1:
+    st.success(f"**체표면적 (BSA): {bsa} m²**")
+with col_res2:
+    if dose_scale_percent == 100:
+        st.info(f"**적용 용량: {dose_scale_percent}% (표준 용량)**")
+    else:
+        st.warning(f"**적용 용량: {dose_scale_percent}% (감량 투여)**")
 
 st.markdown("---")
 
-# 2. 항암 레지멘 선택 (요청하신 순서대로 탭 배치)
+# 2. 항암 레지멘 선택 (5가지 탭)
 st.subheader("2. 항암 레지멘 선택")
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "FOLFOX", 
@@ -37,13 +55,13 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 # ==========================================
 with tab1:
     st.markdown("### 🔹 표준 FOLFOX Regimen")
-    oxali_folfox = round(bsa * 85, 1)          # Oxaliplatin 85 mg/m²
-    leucovorin_folfox = round(bsa * 200, 1)    # Leucovorin 200 mg/m²
-    fu_bolus_folfox = round(bsa * 400, 1)      # 5-FU Bolus 400 mg/m²
-    fu_ci_folfox = round(bsa * 600, 1)          # 5-FU CI 600 mg/m² (22시간/일, 2일간 총 1200mg/m²)
+    oxali_folfox = round(bsa * 85 * scale, 1)          # Oxaliplatin 85 mg/m²
+    leucovorin_folfox = round(bsa * 200 * scale, 1)    # Leucovorin 200 mg/m²
+    fu_bolus_folfox = round(bsa * 400 * scale, 1)      # 5-FU Bolus 400 mg/m²
+    fu_ci_folfox = round(bsa * 600 * scale, 1)          # 5-FU CI 600 mg/m²
     
     st.info(f"""
-    **[표준 FOLFOX 처방 가이드]**
+    **[표준 FOLFOX 처방 가이드] ({dose_scale_percent}% 적용)**
     * **Oxaliplatin (85 mg/m²)**: **{oxali_folfox} mg**
     * **Leucovorin (200 mg/m²)**: **{leucovorin_folfox} mg**
     * **5-FU Bolus (400 mg/m²)**: **{fu_bolus_folfox} mg**
@@ -55,16 +73,15 @@ with tab1:
 # ==========================================
 with tab2:
     st.markdown("### 🔹 FOLFIRI Regimen")
-    
-    iri_dose = round(bsa * 180, 1)             # Irinotecan 180 mg/m²
-    leucovorin_folfiri = round(bsa * 200, 1)   # Leucovorin 200 mg/m²
-    fu_bolus_folfiri = round(bsa * 400, 1)     # 5-FU Bolus 400 mg/m²
-    fu_ci_folfiri = round(bsa * 2400, 1)       # 5-FU CI 2400 mg/m²
+    iri_dose = round(bsa * 180 * scale, 1)             # Irinotecan 180 mg/m²
+    leucovorin_folfiri = round(bsa * 400 * scale, 1)   # Leucovorin 400 mg/m²
+    fu_bolus_folfiri = round(bsa * 400 * scale, 1)     # 5-FU Bolus 400 mg/m²
+    fu_ci_folfiri = round(bsa * 2400 * scale, 1)       # 5-FU CI 2400 mg/m²
     
     st.info(f"""
-    **[FOLFIRI 처방 가이드]**
+    **[FOLFIRI 처방 가이드] ({dose_scale_percent}% 적용)**
     * **Irinotecan (180 mg/m²)**: **{iri_dose} mg**
-    * **Leucovorin (200 mg/m²)**: **{leucovorin_folfiri} mg**
+    * **Leucovorin (400 mg/m²)**: **{leucovorin_folfiri} mg**
     * **5-FU Bolus (400 mg/m²)**: **{fu_bolus_folfiri} mg**
     * **5-FU Continuous Infusion (2400 mg/m², 46h)**: **{fu_ci_folfiri} mg**
     """)
@@ -74,13 +91,13 @@ with tab2:
 # ==========================================
 with tab3:
     st.markdown("### 🔹 mFOLFOX6 Regimen")
-    oxali_mfolfox = round(bsa * 85, 1)         # Oxaliplatin 85 mg/m²
-    leucovorin_mfolfox = round(bsa * 400, 1)   # Leucovorin 400 mg/m²
-    fu_bolus_mfolfox = round(bsa * 400, 1)     # 5-FU Bolus 400 mg/m²
-    fu_ci_mfolfox = round(bsa * 2400, 1)       # 5-FU CI 2400 mg/m² (46시간 지속주입)
+    oxali_mfolfox = round(bsa * 85 * scale, 1)         # Oxaliplatin 85 mg/m²
+    leucovorin_mfolfox = round(bsa * 400 * scale, 1)   # Leucovorin 400 mg/m²
+    fu_bolus_mfolfox = round(bsa * 400 * scale, 1)     # 5-FU Bolus 400 mg/m²
+    fu_ci_mfolfox = round(bsa * 2400 * scale, 1)       # 5-FU CI 2400 mg/m²
     
     st.info(f"""
-    **[mFOLFOX6 처방 가이드]**
+    **[mFOLFOX6 처방 가이드] ({dose_scale_percent}% 적용)**
     * **Oxaliplatin (85 mg/m²)**: **{oxali_mfolfox} mg**
     * **Leucovorin (400 mg/m²)**: **{leucovorin_mfolfox} mg**
     * **5-FU Bolus (400 mg/m²)**: **{fu_bolus_mfolfox} mg**
@@ -88,40 +105,38 @@ with tab3:
     """)
 
 # ==========================================
-# TAB 4: XELOX (젤로다 상세 복용법 적용)
+# TAB 4: XELOX
 # ==========================================
 with tab4:
     st.markdown("### 🔹 XELOX Regimen")
-    oxali_dose = round(bsa * 130, 1)
+    oxali_dose = round(bsa * 130 * scale, 1)
     
-    # Capecitabine(젤로다) 계산: 1000 mg/m² b.i.d. (하루 2회 복용)
-    cape_single_dose = round(bsa * 1000, 1)    # 1회 용량
-    cape_daily_dose = cape_single_dose * 2      # 총 일일 용량
+    # Capecitabine(젤로다) 계산 (감량 비율 적용)
+    cape_single_dose = round(bsa * 1000 * scale, 1)
+    cape_daily_dose = cape_single_dose * 2
     
-    # 1회 복용 알약 수 (500mg, 150mg 조합)
+    # 알약 수 계산
     pills_500_single = int(cape_single_dose // 500)
     rem_dose = cape_single_dose % 500
     pills_150_single = round(rem_dose / 150)
     
-    # 하루 총 복용 알약 수 (아침/저녁 2회 복용 기준)
     pills_500_daily = pills_500_single * 2
     pills_150_daily = pills_150_single * 2
     
     st.info(f"""
-    **[XELOX 처방 가이드]**
+    **[XELOX 처방 가이드] ({dose_scale_percent}% 적용)**
     * **Oxaliplatin (130 mg/m²)**: **{oxali_dose} mg**
     
     ---
     **[Capecitabine (젤로다) 용법 용량]**
-    * **하루 총 용량 (b.i.d.)**: **{cape_daily_dose} mg**
-    * **하루 총 복용 알약 수**: 
-      - 500mg 정제: **총 {pills_500_daily} 알** (아침 {pills_500_single}알 / 저녁 {pills_500_single}알)
-      - 150mg 정제: **총 {pills_150_daily} 알** (아침 {pills_150_single}알 / 저녁 {pills_150_single}알)
     * **1회 용량 (1000 mg/m²)**: **{cape_single_dose} mg**
+    * **하루 총 용량 (b.i.d.)**: **{cape_daily_dose} mg**
     * **1회 복용량 (아침 또는 저녁)**: 
       - 500mg 정제: **{pills_500_single} 알**
       - 150mg 정제: **{pills_150_single} 알**
-
+    * **하루 총 복용 알약 수**: 
+      - 500mg 정제: **총 {pills_500_daily} 알** (아침 {pills_500_single}알 / 저녁 {pills_500_single}알)
+      - 150mg 정제: **총 {pills_150_daily} 알** (아침 {pills_150_single}알 / 저녁 {pills_150_single}알)
     """)
 
 # ==========================================
@@ -130,19 +145,19 @@ with tab4:
 with tab5:
     st.markdown("### 🔹 mFOLFOX6 (Autofuser 230 mL) Regimen")
     
-    oxali_folfox_auto = round(bsa * 85, 1)
-    leucovorin_folfox_auto = round(bsa * 400, 1)
-    fu_bolus_folfox_auto = round(bsa * 400, 1)
+    oxali_folfox_auto = round(bsa * 85 * scale, 1)
+    leucovorin_folfox_auto = round(bsa * 400 * scale, 1)
+    fu_bolus_folfox_auto = round(bsa * 400 * scale, 1)
     
-    # 5-FU 2400 mg/m² (46시간 지속주입), 농도 50 mg/mL, Autofuser 230 mL 기준
-    fu_total_mg = bsa * 2400
+    # 5-FU 2400 mg/m² (감량 비율 적용)
+    fu_total_mg = bsa * 2400 * scale
     fu_volume_ml = round(fu_total_mg / 50, 2)
     
     autofuser_capacity = 230.0
     ns_diluent_ml = round(autofuser_capacity - fu_volume_ml, 2)
     
     st.info(f"""
-    **[mFOLFOX6 기본 처방]**
+    **[mFOLFOX6 기본 처방] ({dose_scale_percent}% 적용)**
     * **Oxaliplatin (85 mg/m²)**: **{oxali_folfox_auto} mg**
     * **Leucovorin (400 mg/m²)**: **{leucovorin_folfox_auto} mg**
     * **5-FU Bolus (400 mg/m²)**: **{fu_bolus_folfox_auto} mg**
