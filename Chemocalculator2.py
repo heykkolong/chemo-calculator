@@ -74,16 +74,16 @@ with tab1:
 with tab2:
     st.markdown("### 🔹 FOLFIRI Regimen")
     iri_dose = round(bsa * 180 * scale, 1)             # Irinotecan 180 mg/m²
-    leucovorin_folfiri = round(bsa * 400 * scale, 1)   # Leucovorin 400 mg/m²
+    leucovorin_folfiri = round(bsa * 200 * scale, 1)   # Leucovorin 200 mg/m²
     fu_bolus_folfiri = round(bsa * 400 * scale, 1)     # 5-FU Bolus 400 mg/m²
-    fu_ci_folfiri = round(bsa * 2400 * scale, 1)       # 5-FU CI 2400 mg/m²
+    fu_ci_folfiri = round(bsa * 600 * scale, 1)       # 5-FU CI 600 mg/m²
     
     st.info(f"""
     **[FOLFIRI 처방 가이드] ({dose_scale_percent}% 적용)**
     * **Irinotecan (180 mg/m²)**: **{iri_dose} mg**
-    * **Leucovorin (400 mg/m²)**: **{leucovorin_folfiri} mg**
+    * **Leucovorin (200 mg/m²)**: **{leucovorin_folfiri} mg**
     * **5-FU Bolus (400 mg/m²)**: **{fu_bolus_folfiri} mg**
-    * **5-FU Continuous Infusion (2400 mg/m², 46h)**: **{fu_ci_folfiri} mg**
+    * **5-FU Continuous Infusion (600 mg/m², 46h)**: **{fu_ci_folfiri} mg**
     """)
 
 # ==========================================
@@ -94,14 +94,14 @@ with tab3:
     oxali_mfolfox = round(bsa * 85 * scale, 1)         # Oxaliplatin 85 mg/m²
     leucovorin_mfolfox = round(bsa * 400 * scale, 1)   # Leucovorin 400 mg/m²
     fu_bolus_mfolfox = round(bsa * 400 * scale, 1)     # 5-FU Bolus 400 mg/m²
-    fu_ci_mfolfox = round(bsa * 2400 * scale, 1)       # 5-FU CI 2400 mg/m²
+    fu_ci_mfolfox = round(bsa * 1200 * scale, 1)       # 5-FU CI 1200 mg/m²
     
     st.info(f"""
     **[mFOLFOX6 처방 가이드] ({dose_scale_percent}% 적용)**
     * **Oxaliplatin (85 mg/m²)**: **{oxali_mfolfox} mg**
     * **Leucovorin (400 mg/m²)**: **{leucovorin_mfolfox} mg**
     * **5-FU Bolus (400 mg/m²)**: **{fu_bolus_mfolfox} mg**
-    * **5-FU Continuous Infusion (2400 mg/m², 46h)**: **{fu_ci_mfolfox} mg**
+    * **5-FU Continuous Infusion (1200 mg/m², 46h)**: **{fu_ci_mfolfox} mg**
     """)
 
 # ==========================================
