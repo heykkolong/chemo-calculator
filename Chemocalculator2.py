@@ -73,7 +73,8 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "FOLFIRI", 
     "mFOLFOX6", 
     "XELOX", 
-    "mFOLFOX6 (Autofuser)"
+    "mFOLFOX6 (Autofuser-K)"
+    "mFOLFOX6 (Accufuser)"
 ])
 
 # ==========================================
@@ -177,6 +178,36 @@ with tab5:
     fu_volume_ml = round(fu_total_mg / 50, 2)
     
     autofuser_capacity = 230.0
+    ns_diluent_ml = round(autofuser_capacity - fu_volume_ml, 2)
+    
+    st.info(f"""
+    **[mFOLFOX6 기본 처방] ({dose_scale_percent}% 적용)**
+    * **Oxaliplatin (85 mg/m²)**: **{oxali_folfox_auto} mg**
+    * **Leucovorin (400 mg/m²)**: **{leucovorin_folfox_auto} mg**
+    * **5-FU Bolus (400 mg/m²)**: **{fu_bolus_folfox_auto} mg**{targeted_text}
+    
+    ---
+    **[5-FU Continuous Infusion (Autofuser 230 mL 계산)]**
+    * **5-FU 총 처방량 (2400 mg/m²)**: **{fu_total_mg:.1f} mg**
+    * **5-FU 약물 부피 (50 mg/mL)**: **{fu_volume_ml} mL**
+    * **Autofuser 용량**: **{autofuser_capacity} mL**
+    * **생리식염수(NS) 희석 혼합량**: **{ns_diluent_ml} mL**
+    """)
+    
+    # ==========================================
+# TAB 5: mFOLFOX6 (Autofuser)
+# ==========================================
+with tab5:
+    st.markdown("### 🔹 mFOLFOX6 (Accufuser 115 mL) Regimen")
+    
+    oxali_folfox_auto = round(bsa * 85 * scale, 1)
+    leucovorin_folfox_auto = round(bsa * 400 * scale, 1)
+    fu_bolus_folfox_auto = round(bsa * 400 * scale, 1)
+    
+    fu_total_mg = bsa * 2400 * scale
+    fu_volume_ml = round(fu_total_mg / 50, 2)
+    
+    autofuser_capacity = 115.0
     ns_diluent_ml = round(autofuser_capacity - fu_volume_ml, 2)
     
     st.info(f"""
