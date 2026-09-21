@@ -195,9 +195,9 @@ with tab5:
     """)
     
     # ==========================================
-# TAB 5: mFOLFOX6 (Autofuser)
+# TAB 6: mFOLFOX6 (Autofuser)
 # ==========================================
-with tab5:
+with tab6:
     st.markdown("### 🔹 mFOLFOX6 (Accufuser 115 mL) Regimen")
     
     oxali_folfox_auto = round(bsa * 85 * scale, 1)
