@@ -224,5 +224,5 @@ with tab6:
     * **생리식염수(NS) 희석 혼합량**: **{ns_diluent_ml} mL**
     """)
     
-    if ns_diluent_ml < 0:
+if ns_diluent_ml < 0:
     st.error("⚠️ 5-FU 약물 용량이 Accufuser 용량(115mL)을 초과했습니다. 조제 용량을 확인해주세요.")
