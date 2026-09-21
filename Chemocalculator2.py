@@ -138,13 +138,23 @@ with tab4:
     st.markdown("### 🔹 XELOX Regimen")
     oxali_dose = round(bsa * 130 * scale, 1)
     
-    cape_single_dose = round(bsa * 1000 * scale, 1)
-    cape_daily_dose = cape_single_dose * 2
+    # Capecitabine 계산
+    cape_single_dose = round(bsa * 1000 * scale, 1) # 1회 목표 용량
+    cape_daily_dose = cape_single_dose * 2          # 하루 목표 용량
     
+    # 1회 복용량 기준 500mg 정제 개수
     pills_500_single = int(cape_single_dose // 500)
-    rem_dose = cape_single_dose % 500
-    pills_150_single = round(rem_dose / 150)
+    rem_dose = cape_single_dose - (pills_500_single * 500)
     
+    # 150mg 정제 개수 (1회 기준)
+    # 반드시 하루 2회(아침/저녁) 동일하게 들어가야 하므로 150mg는 홀수 개(0.5알 등) 처방 불가 -> int() 버림 처리
+    pills_150_single = int(rem_dose // 150)
+    
+    # 실제 복용 결정 용량 계산
+    actual_single_dose = (pills_500_single * 500) + (pills_150_single * 150)
+    actual_daily_dose = actual_single_dose * 2
+    
+    # 하루 총 알약 수
     pills_500_daily = pills_500_single * 2
     pills_150_daily = pills_150_single * 2
     
@@ -153,9 +163,9 @@ with tab4:
 
 ---
 **[Capecitabine (젤로다) 용법 용량]**
-* **1회 용량 (1000 mg/m²)**: **{cape_single_dose} mg**
-* **하루 총 용량 (b.i.d.)**: **{cape_daily_dose} mg**
-* **1회 복용량 (아침 또는 저녁)**: 
+* **1회 계산 용량 (1000 mg/m²)**: **{cape_single_dose} mg** (하루 목표: {cape_daily_dose} mg)
+* **실제 처방 용량**: **1회 {actual_single_dose} mg** (하루 총 **{actual_daily_dose} mg**)
+* **1회 복용량 (아침 / 저녁 동일)**: 
   - 500mg 정제: **{pills_500_single} 알**
   - 150mg 정제: **{pills_150_single} 알**
 * **하루 총 복용 알약 수**: 
