@@ -49,19 +49,22 @@ with col_res2:
     else:
         st.warning(f"**적용 용량: {dose_scale_percent}% (감량 투여)**")
 
-# 표적치료제 용량 계산 함수
+# 표적치료제 용량 계산 함수 (글자 색상 적용)
 def get_targeted_text():
-    if targeted_agent == "Bevacizumab (아바스틴 / 5 mg/kg)":
+    # 원하는 색상 코드 (예: red, #FF5733, #1E88E5 등)
+    color = "red" 
+
+    if targeted_agent == "Bevacizumab (베바시쥬맙 / 5 mg/kg)":
         beva_dose = round(weight * 5 * scale, 1)
-        targeted_text = f"\n\n* **Bevacizumab (5 mg/kg)**: **{beva_dose} mg**"
+        targeted_text = f"\n* <span style='color:{color}; font-weight:bold;'>Bevacizumab (5 mg/kg): {beva_dose} mg</span>"
 
     elif targeted_agent == "Zaltrap (잘트랩 / 4 mg/kg)":
         zaltrap_dose = round(weight * 4 * scale, 1)
-        targeted_text = f"\n\n* **Zaltrap (4 mg/kg)**: **{zaltrap_dose} mg**"
+        targeted_text = f"\n* <span style='color:{color}; font-weight:bold;'>Zaltrap (4 mg/kg): {zaltrap_dose} mg</span>"
 
     elif targeted_agent == "Cetuximab (얼비툭스 / 500 mg/m²)":
         cetux_dose = round(bsa * 500 * scale, 1)
-        targeted_text = f"\n\n* **Cetuximab (500 mg/m²)**: **{cetux_dose} mg**"
+        targeted_text = f"\n* <span style='color:{color}; font-weight:bold;'>Cetuximab (500 mg/m²): {cetux_dose} mg</span>"
 
     else:
         targeted_text = ""
