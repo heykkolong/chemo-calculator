@@ -142,12 +142,9 @@ with tab4:
     cape_single_dose = round(bsa * 1000 * scale, 1) # 1회 목표 용량
     cape_daily_dose = cape_single_dose * 2          # 하루 목표 용량
     
-    # 1회 복용량 기준 500mg 정제 개수
+    # 1회 복용량 기준 정제 개수 (절삭)
     pills_500_single = int(cape_single_dose // 500)
     rem_dose = cape_single_dose - (pills_500_single * 500)
-    
-    # 150mg 정제 개수 (1회 기준)
-    # 반드시 하루 2회(아침/저녁) 동일하게 들어가야 하므로 150mg는 홀수 개(0.5알 등) 처방 불가 -> int() 버림 처리
     pills_150_single = int(rem_dose // 150)
     
     # 실제 복용 결정 용량 계산
@@ -158,19 +155,23 @@ with tab4:
     pills_500_daily = pills_500_single * 2
     pills_150_daily = pills_150_single * 2
     
+    # 처방 용법 표기 생성 (# 2 po)
+    presc_500_str = f"{pills_500_daily} T # 2 po (1회 {pills_500_single}T씩)" if pills_500_daily > 0 else "미처방"
+    presc_150_str = f"{pills_150_daily} T # 2 po (1회 {pills_150_single}T씩)" if pills_150_daily > 0 else "미처방"
+    
     st.info(f"""**[XELOX 처방 가이드] ({dose_scale_percent}% 적용)**
 * **Oxaliplatin (130 mg/m²)**: **{oxali_dose} mg**{targeted_text}
 
 ---
 **[Capecitabine (젤로다) 용법 용량]**
 * **1회 계산 용량 (1000 mg/m²)**: **{cape_single_dose} mg** (하루 목표: {cape_daily_dose} mg)
-* **실제 처방 용량**: **1회 {actual_single_dose} mg** (하루 총 **{actual_daily_dose} mg**)
+* **실제 처방 용량**: **1회 {actual_single_dose} mg** (1일 총 복용 용량: **{actual_daily_dose} mg**)
 * **1회 복용량 (아침 / 저녁 동일)**: 
   - 500mg 정제: **{pills_500_single} 알**
   - 150mg 정제: **{pills_150_single} 알**
-* **하루 총 복용 알약 수**: 
-  - 500mg 정제: **총 {pills_500_daily} 알** (아침 {pills_500_single}알 / 저녁 {pills_500_single}알)
-  - 150mg 정제: **총 {pills_150_daily} 알** (아침 {pills_150_single}알 / 저녁 {pills_150_single}알)""")
+* **1일 총 처방 용법**: 
+  - 500mg 정제: **{presc_500_str}**
+  - 150mg 정제: **{presc_150_str}**""")
 
 # ==========================================
 # TAB 5: mFOLFOX6 (Autofuser 230 mL)
