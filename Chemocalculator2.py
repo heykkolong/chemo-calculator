@@ -165,14 +165,14 @@ with tab4:
 
 ---
 **[Capecitabine (젤로다) 세부 용법 용량]**
+* **1일 총 처방 용법**: 
+  - 500mg 정제: **{presc_500_str}**
+  - 150mg 정제: **{presc_150_str}**
 * **1회 계산 용량 (1000 mg/m²)**: **{cape_single_dose} mg** (하루 목표: {cape_daily_dose} mg)
 * **실제 처방 용량**: **1회 {actual_single_dose} mg** (1일 총 복용 용량: **{actual_daily_dose} mg**)
 * **1회 복용량 (아침 / 저녁 동일)**: 
   - 500mg 정제: **{pills_500_single} 알**
-  - 150mg 정제: **{pills_150_single} 알**
-* **1일 총 처방 용법**: 
-  - 500mg 정제: **{presc_500_str}**
-  - 150mg 정제: **{presc_150_str}**""")
+  - 150mg 정제: **{pills_150_single} 알**""")
 
 # ==========================================
 # TAB 5: mFOLFOX6 (Autofuser 230 mL)
