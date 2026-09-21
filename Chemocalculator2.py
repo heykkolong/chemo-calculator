@@ -53,15 +53,15 @@ with col_res2:
 def get_targeted_text():
     if targeted_agent == "Bevacizumab (아바스틴 / 5 mg/kg)":
         beva_dose = round(weight * 5 * scale, 1)
-        targeted_text = f"\n* **Bevacizumab (5 mg/kg)**: **{beva_dose} mg**"
+        targeted_text = f"\n\n* **Bevacizumab (5 mg/kg)**: **{beva_dose} mg**"
 
     elif targeted_agent == "Zaltrap (잘트랩 / 4 mg/kg)":
         zaltrap_dose = round(weight * 4 * scale, 1)
-        targeted_text = f"\n* **Zaltrap (4 mg/kg)**: **{zaltrap_dose} mg**"
+        targeted_text = f"\n\n* **Zaltrap (4 mg/kg)**: **{zaltrap_dose} mg**"
 
     elif targeted_agent == "Cetuximab (얼비툭스 / 500 mg/m²)":
         cetux_dose = round(bsa * 500 * scale, 1)
-        targeted_text = f"\n* **Cetuximab (500 mg/m²)**: **{cetux_dose} mg**"
+        targeted_text = f"\n\n* **Cetuximab (500 mg/m²)**: **{cetux_dose} mg**"
 
     else:
         targeted_text = ""
