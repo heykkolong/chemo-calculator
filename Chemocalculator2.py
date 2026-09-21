@@ -68,13 +68,13 @@ st.markdown("---")
 
 # 2. 항암 레지멘 선택 (5가지 탭)
 st.subheader("2. 항암 레지멘 선택")
-tab1, tab2, tab3, tab4, tab5 = st.tabs([
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
     "FOLFOX", 
     "FOLFIRI", 
     "mFOLFOX6", 
     "XELOX", 
-    "mFOLFOX6 (Autofuser-K)"
-    "mFOLFOX6 (Accufuser)"
+    "mFOLFOX6 (Autofuser 230 mL)",
+    "mFOLFOX6 (Accufuser 115 mL)"  # 6번째 탭 이름 추가
 ])
 
 # ==========================================
@@ -217,7 +217,7 @@ with tab6:
     * **5-FU Bolus (400 mg/m²)**: **{fu_bolus_folfox_auto} mg**{targeted_text}
     
     ---
-    **[5-FU Continuous Infusion (Autofuser 230 mL 계산)]**
+    **[5-FU Continuous Infusion (Accufuser 115 mL 계산)]**
     * **5-FU 총 처방량 (2400 mg/m²)**: **{fu_total_mg:.1f} mg**
     * **5-FU 약물 부피 (50 mg/mL)**: **{fu_volume_ml} mL**
     * **Autofuser 용량**: **{autofuser_capacity} mL**
@@ -225,4 +225,4 @@ with tab6:
     """)
     
     if ns_diluent_ml < 0:
-        st.error("⚠️ 5-FU 약물 용량이 Autofuser 용량(230mL)을 초과했습니다. 조제 용량을 확인해주세요.")
+    st.error("⚠️ 5-FU 약물 용량이 Accufuser 용량(115mL)을 초과했습니다. 조제 용량을 확인해주세요.")
