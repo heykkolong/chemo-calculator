@@ -51,21 +51,22 @@ with col_res2:
 
 # 표적치료제 용량 계산 함수
 def get_targeted_text():
-if targeted_agent == "Bevacizumab (아바스틴 / 5 mg/kg)":
-    beva_dose = round(weight * 5 * scale, 1)
-    targeted_text = f"\n* **Bevacizumab (5 mg/kg):** {beva_dose} mg"
+    if targeted_agent == "Bevacizumab (아바스틴 / 5 mg/kg)":
+        beva_dose = round(weight * 5 * scale, 1)
+        targeted_text = f"\n* **Bevacizumab (5 mg/kg):** {beva_dose} mg"
 
-elif targeted_agent == "Zaltrap (잘트랩 / 4 mg/kg)":
-    zaltrap_dose = round(weight * 4 * scale, 1)
-    targeted_text = f"\n* **Zaltrap (4 mg/kg):** {zaltrap_dose} mg"
+    elif targeted_agent == "Zaltrap (잘트랩 / 4 mg/kg)":
+        zaltrap_dose = round(weight * 4 * scale, 1)
+        targeted_text = f"\n* **Zaltrap (4 mg/kg):** {zaltrap_dose} mg"
 
-elif targeted_agent == "Cetuximab (얼비툭스 / 첫회 400, 유지 250 mg/m²)":
-    cetux_init = round(bsa * 400 * scale, 1)
-    cetux_maint = round(bsa * 250 * scale, 1)
-    targeted_text = f"\n* **Cetuximab:** 첫회 {cetux_init} mg / 유지 {cetux_maint} mg"
+    elif targeted_agent == "Cetuximab (얼비툭스 / 500 mg/m²)":
+        cetux_init = round(bsa * 400 * scale, 1)
+        cetux_maint = round(bsa * 250 * scale, 1)
 
-else:
-    targeted_text = ""
+    else:
+        targeted_text = ""
+        
+    return targeted_text
 
 targeted_text = get_targeted_text()
 
