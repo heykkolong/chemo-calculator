@@ -123,13 +123,13 @@ with tab3:
     oxali_mfolfox = round(bsa * 85 * scale, 1)
     leucovorin_mfolfox = round(bsa * 400 * scale, 1)
     fu_bolus_mfolfox = round(bsa * 400 * scale, 1)
-    fu_ci_mfolfox = round(bsa * 2400 * scale, 1)
+    fu_ci_mfolfox = round(bsa * 1200 * scale, 1)
     
     st.info(f"""**[mFOLFOX6 처방 가이드] ({dose_scale_percent}% 적용)**
 * **Oxaliplatin (85 mg/m²)**: **{oxali_mfolfox} mg**
 * **Leucovorin (400 mg/m²)**: **{leucovorin_mfolfox} mg**
 * **5-FU Bolus (400 mg/m²)**: **{fu_bolus_mfolfox} mg**
-* **5-FU Continuous Infusion (2400 mg/m², 46h)**: **{fu_ci_mfolfox} mg**{targeted_text}""")
+* **5-FU Continuous Infusion (1200 mg/m², 22h)**: **{fu_ci_mfolfox} mg**{targeted_text}""")
 
 # ==========================================
 # TAB 4: XELOX
