@@ -112,8 +112,8 @@ with tab2:
     st.info(f"""**[FOLFIRI 처방 가이드] ({dose_scale_percent}% 적용)**
 * **Irinotecan (180 mg/m²)**: **{iri_dose} mg**
 * **Leucovorin (200 mg/m²)**: **{leucovorin_folfiri} mg**
-* **5-FU Bolus (400 mg/m²)**: **{fu_bolus_folfiri} mg**
-* **5-FU Continuous Infusion (600 mg/m², 46h)**: **{fu_ci_folfiri} mg**{targeted_text}""")
+* **5-FU Bolus (400 mg/m²)**: **{fu_bolusolfiri} mg**
+* **5-FU Continuous Infusion (600 mg/m², 22h)**: **{fu_ci_folfiri} mg**{targeted_text}""")
 
 # ==========================================
 # TAB 3: mFOLFOX6
